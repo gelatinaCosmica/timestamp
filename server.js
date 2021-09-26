@@ -58,13 +58,13 @@ app.get("/api/:date", (req, res) => {
   //   dateConvertedObj.utc = new Date(parseInt(input)).toUTCString()
   // }
 
-  // if (!dateConvertedObj.unix || !dateConvertedObj.utc) {
-  //   res.json({ error: 'Invalid Date' })
-  // }
-
-  if (dateConvertedObj == 'Invalid Date') {
+  if (!dateConvertedObj.unix || !dateConvertedObj.utc) {
     res.json({ error: 'Invalid Date' })
   }
+
+  // if (dateConvertedObj == 'Invalid Date') {
+  //   res.json({ error: 'Invalid Date' })
+  // }
 
   res.json(dateConvertedObj)
 })
