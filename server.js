@@ -35,20 +35,34 @@ app.get('/api', (req, res) => {
 
 app.get("/api/:date", (req, res) => {
   let input = req.params.date
+  let isNum = /^\d+$/.test(input)
 
-  if (input.includes('-')) {
+  // if (isNum) {
+  //   dateConvertedObj.unix = new Date(pasrseInt(input)).getTime()
+  //   dateConvertedObj.utc = new Date(parseInt(input)).toUTCString()
+  // }
+
+  if (isNum) {
+    dateConvertedObj.unix = new Date(parseInt(input)).getTime()
+    dateConvertedObj.utc = new Date(parseInt(input)).toUTCString()
+  } else if (input.includes('-')) {
     dateConvertedObj.unix = new Date(input).getTime()
     dateConvertedObj.utc = new Date(input).toUTCString()
   } else {
-    input = parseInt(input)
-
-    dateConvertedObj.unix = new Date(input).getTime()
-    dateConvertedObj.utc = new Date(input).toUTCString()
-  }
-
-  if (!dateConvertedObj.unix || !dateConvertedObj.utc) {
     res.json({ error: 'Invalid Date' })
   }
+
+  // if (input.includes('-')) {
+  //   dateConvertedObj.unix = new Date(input).getTime()
+  //   dateConvertedObj.utc = new Date(input).toUTCString()
+  // } else {
+  //   dateConvertedObj.unix = new Date(parseInt(input)).getTime()
+  //   dateConvertedObj.utc = new Date(parseInt(input)).toUTCString()
+  // }
+
+  // if (!dateConvertedObj.unix || !dateConvertedObj.utc) {
+  //   res.json({ error: 'Invalid Date' })
+  // }
 
   res.json(dateConvertedObj)
 })
@@ -56,6 +70,6 @@ app.get("/api/:date", (req, res) => {
 
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
