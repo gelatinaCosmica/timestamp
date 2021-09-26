@@ -4,7 +4,7 @@
 // init project
 var express = require('express');
 var app = express();
-var moment = require('moment')
+// var moment = require('moment')
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
@@ -25,22 +25,24 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: 'hello API' });
 });
 
+let dateConvertedObj = {}
 app.get('/api/timestamp', (req, res) => {
-  dateConvertedObj.unix = moment().unix()
-  dateConvertedObj.utc = moment().utc()
+  dateConvertedObj.unix = new Date().getTime()
+  dateConvertedObj.utc = new Date().toUTCString()
   res.json(dateConvertedObj)
 })
 
-let dateConvertedObj = {}
 app.get("/api/:date", (req, res) => {
-  let isDateValid = moment(req.params.date).isValid()
+  let input = req.params.date
 
-  if (req.params.date.includes('-') && isDateValid) {
-    dateConvertedObj.unix = moment(req.params.date).unix()
-    dateConvertedObj.utc = moment(req.params.date).utc()
+  if (input.includes('-')) {
+    dateConvertedObj.unix = new Date(input).getTime()
+    dateConvertedObj.utc = new Date(input).toUTCString()
   } else {
-    dateConvertedObj.unix = moment(Number(req.params.date)).unix()
-    dateConvertedObj.utc = moment(Number(req.params.date)).utc()
+    input = parseInt(input)
+
+    dateConvertedObj.unix = new Date(input).getTime()
+    dateConvertedObj.utc = new Date(input).toUTCString()
   }
 
   if (!dateConvertedObj.unix || !dateConvertedObj.utc) {
@@ -52,6 +54,6 @@ app.get("/api/:date", (req, res) => {
 
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
