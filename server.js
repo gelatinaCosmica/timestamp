@@ -60,7 +60,11 @@ app.get("/api/:date", (req, res) => {
   //   dateConvertedObj.utc = new Date(parseInt(input)).toUTCString()
   // }
 
-  if (!dateConvertedObj.unix || !dateConvertedObj.utc) {
+  // if (!dateConvertedObj.unix || !dateConvertedObj.utc) {
+  //   res.json({ error: 'Invalid Date' })
+  // }
+
+  if (dateConvertedObj == 'Invalid Date') {
     res.json({ error: 'Invalid Date' })
   }
 
@@ -70,6 +74,6 @@ app.get("/api/:date", (req, res) => {
 
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
