@@ -26,7 +26,8 @@ app.get("/api/hello", function (req, res) {
 });
 
 let dateConvertedObj = {}
-app.get('/api/timestamp', (req, res) => {
+
+app.get('/api', (req, res) => {
   dateConvertedObj.unix = new Date().getTime()
   dateConvertedObj.utc = new Date().toUTCString()
   res.json(dateConvertedObj)
@@ -51,6 +52,7 @@ app.get("/api/:date", (req, res) => {
 
   res.json(dateConvertedObj)
 })
+
 
 
 // listen for requests :)
