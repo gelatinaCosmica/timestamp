@@ -9,6 +9,7 @@ var moment = require('moment')
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
 var cors = require('cors');
+const { ISO_8601 } = require('moment');
 app.use(cors({ optionsSuccessStatus: 200 }));  // some legacy browsers choke on 204
 
 // http://expressjs.com/en/starter/static-files.html
@@ -24,22 +25,31 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: 'hello API' });
 });
 
+app.get('/api/timestamp', (req, res) => {
+  dateConvertedObj.unix = moment().unix()
+  dateConvertedObj.utc = moment().utc()
+  res.json(dateConvertedObj)
+})
+
+let dateConvertedObj = {}
 app.get("/api/:date", (req, res) => {
   let isDateValid = moment(req.params.date).isValid()
-  let msDateParam = new Date(Number(req.params.date))
-  let arrDateParam = new Date(req.params.date)
 
-  let dateConvertedObj = {}
-
-  if (isDateValid) {
-    dateConvertedObj = { unix: arrDateParam.getTime(), utc: arrDateParam.toUTCString() }
+  if (req.params.date.includes('-') && isDateValid) {
+    dateConvertedObj.unix = moment(req.params.date).unix()
+    dateConvertedObj.utc = moment(req.params.date).utc()
   } else {
-    dateConvertedObj = { unix: msDateParam.getTime(), utc: msDateParam.toUTCString() }
+    dateConvertedObj.unix = moment(Number(req.params.date)).unix()
+    dateConvertedObj.utc = moment(Number(req.params.date)).utc()
   }
-  console.log(msDateParam)
+
+  if (!dateConvertedObj.unix || !dateConvertedObj.utc) {
+    res.json({ error: 'Invalid Date' })
+  }
 
   res.json(dateConvertedObj)
 })
+
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
