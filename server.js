@@ -34,13 +34,14 @@ app.get("/api/:date", (req, res) => {
   if (isDateValid) {
     dateConvertedObj = { unix: arrDateParam.getTime(), utc: arrDateParam.toUTCString() }
   } else {
-    dateConvertedObj = { unix: msDateParam, utc: msDateParam.toUTCString() }
+    dateConvertedObj = { unix: msDateParam.getTime(), utc: msDateParam.toUTCString() }
   }
+  console.log(msDateParam)
 
   res.json(dateConvertedObj)
 })
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
