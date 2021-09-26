@@ -45,11 +45,9 @@ app.get("/api/:date", (req, res) => {
   if (isNum) {
     dateConvertedObj.unix = new Date(parseInt(input)).getTime()
     dateConvertedObj.utc = new Date(parseInt(input)).toUTCString()
-  } else if (input.includes('-')) {
+  } else {
     dateConvertedObj.unix = new Date(input).getTime()
     dateConvertedObj.utc = new Date(input).toUTCString()
-  } else {
-    res.json({ error: 'Invalid Date' })
   }
 
   // if (input.includes('-')) {
